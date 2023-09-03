@@ -1,4 +1,4 @@
-package bitcoind
+package bgld
 
 import (
 	. "github.com/onsi/ginkgo"
@@ -9,5 +9,5 @@ import (
 
 func TestBitcoind(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Bitcoind Suite")
+	RunSpecs(t, "BGLd Suite")
 }

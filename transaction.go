@@ -1,4 +1,4 @@
-package bitcoind
+package bgld
 
 // A ScriptSig represents a scriptsyg
 type ScriptSig struct {

@@ -1,5 +1,5 @@
-// Package Bitcoind is client librari for bitcoind JSON RPC API
-package bitcoind
+// package bgld is client librari for bitcoind JSON RPC API
+package bgld
 
 import (
 	"encoding/json"

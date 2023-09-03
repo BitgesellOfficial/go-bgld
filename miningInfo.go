@@ -1,4 +1,4 @@
-package bitcoind
+package bgld
 
 // A MiningInfo represents a mininginfo response
 type MiningInfo struct {

@@ -1,4 +1,4 @@
-package bitcoind
+package bgld
 
 import (
 	"fmt"

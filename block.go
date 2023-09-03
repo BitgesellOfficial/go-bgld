@@ -1,4 +1,4 @@
-package bitcoind
+package bgld
 
 // Represents a block
 type Block struct {

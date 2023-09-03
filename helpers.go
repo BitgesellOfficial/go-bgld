@@ -1,4 +1,4 @@
-package bitcoind
+package bgld
 
 // handleError handle error returned by client.call
 func handleError(err error, r *rpcResponse) error {

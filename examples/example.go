@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/toorop/go-bitcoind"
+	"github.com/naftalimurgor/go-bgld"
 	"log"
 )
 
@@ -16,7 +16,7 @@ const (
 )
 
 func main() {
-	bc, err := bitcoind.New(SERVER_HOST, SERVER_PORT, USER, PASSWD, USESSL)
+	bc, err := bgld.New(SERVER_HOST, SERVER_PORT, USER, PASSWD, USESSL)
 	if err != nil {
 		log.Fatalln(err)
 	}
