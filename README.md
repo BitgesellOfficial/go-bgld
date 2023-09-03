@@ -1,5 +1,7 @@
 ## bgld
 
+<img src="Icon.png" style="height: 60px;"/>
+
 A Golang client library wrapping the BGLd JSON RPC API for Bitgesell blockchain network.
 
 
