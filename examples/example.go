@@ -8,8 +8,8 @@ import (
 const (
 	SERVER_HOST        = ""
 	SERVER_PORT        = 8334
-	USER               = "bitcoinrpc"
-	PASSWD             = "sss"
+	USER               = "localuser"
+	PASSWD             = "3xaO3o/i-]G4"
 	USESSL             = false
 	WALLET_PASSPHRASE  = "p1"
 	WALLET_PASSPHRASE2 = "p2"
