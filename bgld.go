@@ -91,8 +91,8 @@ func (b *Bitcoind) GetAddressesByAccount(account string) (addresses []string, er
 }
 
 // GetBalance return the balance of the server or of a specific account
-//If [account] is "", returns the server's total available balance.
-//If [account] is specified, returns the balance in the account
+// If [account] is "", returns the server's total available balance.
+// If [account] is specified, returns the balance in the account
 func (b *Bitcoind) GetBalance(account string, minconf uint64) (balance float64, err error) {
 	r, err := b.client.call("getbalance", []interface{}{account, minconf})
 	if err = handleError(err, &r); err != nil {
@@ -582,19 +582,21 @@ func (b *Bitcoind) ListReceivedByAddress(minConf uint32, includeEmpty bool) (lis
 }
 
 // ListSinceBlock
-func (b *Bitcoind) ListSinceBlock(blockHash string, targetConfirmations uint32) (transaction []Transaction, err error) {
+func (b *Bitcoind) ListSinceBlock(blockHash string, targetConfirmations uint32) (transaction []Transaction, lastBlock string, err error) {
 	r, err := b.client.call("listsinceblock", []interface{}{blockHash, targetConfirmations})
 	if err = handleError(err, &r); err != nil {
 		return
 	}
 	type ts struct {
-		Transactions []Transaction
+		Transactions []Transaction `json:"transactions"`
+		LastBlock    string        `json:"lastblock"`
 	}
 	var result ts
 	if err = json.Unmarshal(r.Result, &result); err != nil {
 		return
 	}
 	transaction = result.Transactions
+	lastBlock = result.LastBlock
 	return
 }
 
@@ -661,8 +663,9 @@ func (b *Bitcoind) Move(formAccount, toAccount string, amount float64, minconf u
 }
 
 // SendFrom send amount from fromAccount to toAddress
-//  amount is a real and is rounded to 8 decimal places.
-//  Will send the given amount to the given address, ensuring the account has a valid balance using [minconf] confirmations.
+//
+//	amount is a real and is rounded to 8 decimal places.
+//	Will send the given amount to the given address, ensuring the account has a valid balance using [minconf] confirmations.
 func (b *Bitcoind) SendFrom(fromAccount, toAddress string, amount float64, minconf uint32, comment, commentTo string) (txID string, err error) {
 	r, err := b.client.call("sendfrom", []interface{}{fromAccount, toAddress, amount, minconf, comment, commentTo})
 	if err = handleError(err, &r); err != nil {
