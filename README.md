@@ -8,7 +8,7 @@ A Golang client library wrapping the BGLd JSON RPC API for Bitgesell blockchain 
 ## Installation
 
 ```sh
-$ go get https://github.com/naftalimurgor/go-bgld
+$ go get https://github.com/bitgesellofficial/go-bgld
 ```
 
 
@@ -18,7 +18,7 @@ $ go get https://github.com/naftalimurgor/go-bgld
 	package main
 
 	import (
-		"github.com/naftalimurgor/go-bgld"
+		"github.com/bitgesellofficial/go-bgld"
 		"log"
 	)
 
@@ -59,7 +59,7 @@ Mores examples in example.go (in examples folder)
 
 Click on the button below to access the full documentation:
 
-[![GoDoc](https://godoc.org/github.com/naftalimurgor/go-bgld?status.png)](https://godoc.org/github.com/naftalimurgor/go-bgld)	
+[![GoDoc](https://godoc.org/github.com/bitgesellofficial/go-bgld?status.png)](https://godoc.org/github.com/bitgesellofficial/go-bgld)	
 
 
 
