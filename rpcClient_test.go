@@ -2,14 +2,15 @@ package bgld
 
 import (
 	"fmt"
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
-	//"log"
+	// "log"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
 	"strings"
 	"time"
+
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 )
 
 var _ = Describe("RpcClient", func() {
@@ -40,7 +41,7 @@ var _ = Describe("RpcClient", func() {
 			client, err := newClient("127.0.0.1", 123, "fake", "fake", false, 30)
 			_, err = client.call("getdifficulty", nil)
 			It("err should occured", func() {
-				Expect(err).Should(MatchError("Post http://127.0.0.1:123: dial tcp 127.0.0.1:123: connection refused"))
+				Expect(err).Should(MatchError("Post \"http://127.0.0.1:123\": dial tcp 127.0.0.1:123: connect: connection refused"))
 			})
 		})
 

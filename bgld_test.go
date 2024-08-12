@@ -2,13 +2,14 @@ package bgld
 
 import (
 	"fmt"
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
 	"log"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
 	"strings"
+
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 )
 
 func getNewTestServer(handler http.Handler) (testServer *httptest.Server, host string, port int, err error) {
@@ -59,7 +60,7 @@ var _ = Describe("BGLd", func() {
 			})
 
 			It("error should be 'fake error'", func() {
-				Expect(err).Should(MatchError("(6) fake error"))
+				Expect(err).Should(MatchError("6: fake error"))
 			})
 		})
 	})
@@ -1617,11 +1618,11 @@ var _ = Describe("BGLd", func() {
 			}
 			defer ts.Close()
 			bitcoindClient, _ := New(host, port, "x", "fake", false)
-			transactions, err := bitcoindClient.ListSinceBlock("00000000000000003f8d1861d035e44d4297c49bd2517dc0a44ad73c7091926c", 1)
+			transactions, lastblock, err := bitcoindClient.ListSinceBlock("00000000000000003f8d1861d035e44d4297c49bd2517dc0a44ad73c7091926c", 1)
 			It("should not error", func() {
 				Expect(err).NotTo(HaveOccurred())
 			})
-			It("sould return a slice of Transaction", func() {
+			It("should return a slice of Transaction", func() {
 				Expect(transactions).Should(Equal([]Transaction{
 					{
 						Amount:          0.0002,
@@ -1658,6 +1659,9 @@ var _ = Describe("BGLd", func() {
 						Hex:             "",
 					},
 				}))
+			})
+			It("should return last block hash", func() {
+				Expect(lastblock).Should(Equal("00000000000000005ec70ef0ff08a100df533c99c197d4b2d7fa7cbad102e3b5"))
 			})
 		})
 	})

@@ -1,13 +1,14 @@
 package main
 
 import (
-	"github.com/naftalimurgor/go-bgld"
 	"log"
+
+	"github.com/bitgesellofficial/go-bgld"
 )
 
 const (
-	SERVER_HOST        = ""
-	SERVER_PORT        = 8334
+	SERVER_HOST        = "localhost"
+	SERVER_PORT        = 8455
 	USER               = "localuser"
 	PASSWD             = "3xaO3o/i-]G4"
 	USESSL             = false
@@ -21,7 +22,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	//walletpassphrase
+	// walletpassphrase
 	err = bc.WalletPassphrase(WALLET_PASSPHRASE, 3600)
 	log.Println(err)
 
@@ -49,7 +50,7 @@ func main() {
 		log.Println(err, account)
 	*/
 
-	//getaccountaddress
+	// getaccountaddress
 	/*
 		address, err := bc.GetAccountAddress("tests")
 		log.Println(err, address)

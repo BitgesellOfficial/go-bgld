@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestBitcoind(t *testing.T) {
+func TestBGLd(t *testing.T) {
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "BGLd Suite")
 }
