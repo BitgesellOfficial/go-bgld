@@ -112,12 +112,12 @@ type BlockHeader struct {
 	Time              int64
 	Mediantime        int64
 	Nonce             uint32
-	Bits              uint32
+	Bits              string
 	Difficulty        float64
 	Chainwork         string
 	Txes              int    `json:"nTx"`
-	Previousblockhash string `json:"omitempty"`
-	Nextblockhash     string `json:"omitempty"`
+	Previousblockhash string `json:"previousblockhash,omitempty"`
+	Nextblockhash     string `json:"nextblockhash,omitempty"`
 }
 
 func (b *Bgld) GetBlockheader(blockHash string) (*BlockHeader, error) {
