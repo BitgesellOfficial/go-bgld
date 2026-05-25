@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"strconv"
-	"strings"
 	"testing"
 )
 
@@ -16,12 +16,15 @@ func TestGetBlockheaderDecodesBitgesellCoreResponse(t *testing.T) {
 	ts := httptest.NewServer(handler)
 	defer ts.Close()
 
-	parts := strings.Split(ts.URL, ":")
-	port, err := strconv.Atoi(parts[2])
+	serverURL, err := url.Parse(ts.URL)
 	if err != nil {
 		t.Fatal(err)
 	}
-	client, err := New(parts[1][2:], port, "user", "pass", false)
+	port, err := strconv.Atoi(serverURL.Port())
+	if err != nil {
+		t.Fatal(err)
+	}
+	client, err := New(serverURL.Hostname(), port, "user", "pass", false)
 	if err != nil {
 		t.Fatal(err)
 	}
