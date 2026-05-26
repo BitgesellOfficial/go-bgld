@@ -2,6 +2,7 @@ package bgld
 
 import (
 	"bytes"
+	"context"
 	"crypto/tls"
 	"encoding/json"
 	"errors"
@@ -77,29 +78,11 @@ func newClient(host string, port int, user, passwd string, useSSL bool, timeout 
 	return
 }
 
-// doTimeoutRequest process a HTTP request with timeout
-func (c *rpcClient) doTimeoutRequest(timer *time.Timer, req *http.Request) (*http.Response, error) {
-	type result struct {
-		resp *http.Response
-		err  error
-	}
-	done := make(chan result, 1)
-	go func() {
-		resp, err := c.httpClient.Do(req)
-		done <- result{resp, err}
-	}()
-	// Wait for the read or the timeout
-	select {
-	case r := <-done:
-		return r.resp, r.err
-	case <-timer.C:
-		return nil, errors.New("Timeout reading data from server")
-	}
-}
-
 // call prepare & exec the request
 func (c *rpcClient) call(method string, params interface{}) (rr rpcResponse, err error) {
-	connectTimer := time.NewTimer(time.Duration(c.timeout) * time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(c.timeout)*time.Second)
+	defer cancel()
+
 	rpcR := rpcRequest{method, params, time.Now().UnixNano(), "1.0"}
 	payloadBuffer := &bytes.Buffer{}
 	jsonEncoder := json.NewEncoder(payloadBuffer)
@@ -107,7 +90,7 @@ func (c *rpcClient) call(method string, params interface{}) (rr rpcResponse, err
 	if err != nil {
 		return
 	}
-	req, err := http.NewRequest("POST", c.serverAddr, payloadBuffer)
+	req, err := http.NewRequestWithContext(ctx, "POST", c.serverAddr, payloadBuffer)
 	if err != nil {
 		return
 	}
@@ -119,8 +102,11 @@ func (c *rpcClient) call(method string, params interface{}) (rr rpcResponse, err
 		req.SetBasicAuth(c.user, c.passwd)
 	}
 
-	resp, err := c.doTimeoutRequest(connectTimer, req)
+	resp, err := c.httpClient.Do(req)
 	if err != nil {
+		if errors.Is(ctx.Err(), context.DeadlineExceeded) || errors.Is(err, context.DeadlineExceeded) {
+			err = errors.New("Timeout reading data from server")
+		}
 		return
 	}
 	defer resp.Body.Close()
