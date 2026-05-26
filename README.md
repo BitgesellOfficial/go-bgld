@@ -2,7 +2,9 @@
 
 <img src="Icon.png" style="height: 60px;"/>
 
-A Golang client library wrapping the BGLd JSON RPC API for Bitgesell blockchain network.
+[![Go Reference](https://pkg.go.dev/badge/github.com/bitgesellofficial/go-bgld.svg)](https://pkg.go.dev/github.com/bitgesellofficial/go-bgld)
+
+A Go client library wrapping the BGLd JSON-RPC API for the Bitgesell blockchain network.
 
 
 ## Installation
@@ -15,64 +17,59 @@ go get github.com/bitgesellofficial/go-bgld
 ## Usage
 ----
 ```go
-	package main
+package main
 
-	import (
-		"github.com/bitgesellofficial/go-bgld"
-		"log"
-	)
+import (
+	"log"
 
-	const (
-		SERVER_HOST        = "You server host"
-		SERVER_PORT        = port (int)
-		USER               = "user"
-		PASSWD             = "passwd"
-		USESSL             = false
-		WALLET_PASSPHRASE  = "WalletPassphrase"
-	)
+	bgld "github.com/bitgesellofficial/go-bgld"
+)
 
-	func main() {
-		bc, err := bgld.New(SERVER_HOST, SERVER_PORT, USER, PASSWD, USESSL)
-		if err != nil {
-			log.Fatalln(err)
-		}
+const (
+	serverHost       = "localhost"
+	serverPort       = 8454
+	user             = "user"
+	password         = "password"
+	useSSL           = false
+	walletPassphrase = "wallet-passphrase"
+)
 
-		//walletpassphrase
-		err = bc.WalletPassphrase(WALLET_PASSPHRASE, 3600)
-		log.Println(err)
-
-		// backupwallet
-		err = bc.BackupWallet("/tmp/wallet.dat")
-		log.Println(err)
-
-
-		// dumpprivkey
-		privKey, err := bc.DumpPrivKey("1KU5DX7jKECLxh1nYhmQ7CahY7GMNMVLP3")
-		log.Println(err, privKey)
-
+func main() {
+	bc, err := bgld.New(serverHost, serverPort, user, password, useSSL)
+	if err != nil {
+		log.Fatalln(err)
 	}
+
+	err = bc.WalletPassphrase(walletPassphrase, 3600)
+	log.Println(err)
+
+	err = bc.BackupWallet("/tmp/wallet.dat")
+	log.Println(err)
+
+	privKey, err := bc.DumpPrivKey("1KU5DX7jKECLxh1nYhmQ7CahY7GMNMVLP3")
+	log.Println(err, privKey)
+}
 ```
 	
-Mores examples in example.go (in examples folder) 
+More examples are available in `examples/example.go`.
 
 ## Documentation
 
 Click on the button below to access the full documentation:
 
-[![GoDoc](https://godoc.org/github.com/bitgesellofficial/go-bgld?status.png)](https://godoc.org/github.com/bitgesellofficial/go-bgld)	
+[Go Reference for github.com/bitgesellofficial/go-bgld](https://pkg.go.dev/github.com/bitgesellofficial/go-bgld)
 
 
 
 ## Unit tests
-[![Build Status](https://travis-ci.org/Toorop/go-bitcoind.svg)](https://travis-ci.org/toorop/go-bitcoind)
 
 More than 100 unit tests are made.
 
 To run tests:
 
-	$ go get github.com/onsi/ginkgo/ginkgo
-	$ go get github.com/onsi/gomega
-	$ ginkgo
+```sh
+go test ./...
+```
 
 	Running Suite: BGLd Suite	
 	=============================
@@ -99,4 +96,3 @@ Todo
 ##### Note on SSL support 
 
 Note on ssl support : bgld library doesn't verify the server's certificate chain. That means that it accepts any certificate presented by the server and any host name in that certificate. In this mode, TLS is susceptible to man-in-the-middle attacks.
-
