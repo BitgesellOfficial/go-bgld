@@ -47,14 +47,14 @@ var _ = Describe("RpcClient", func() {
 
 		Context("When timeout occured", func() {
 			ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				time.Sleep((RPCCLIENT_TIMEOUT + 2) * time.Second)
+				time.Sleep(2 * time.Second)
 				fmt.Fprintln(w, "Hello, client")
 			}))
 			defer ts.Close()
 			p := strings.Split(ts.URL, ":")
 			host := p[1][2:]
 			port, err := strconv.ParseInt(p[2], 10, 64)
-			client, err := newClient(host, int(port), "fake", "fake", false, 30)
+			client, err := newClient(host, int(port), "fake", "fake", false, 1)
 			_, err = client.call("getdifficulty", nil)
 
 			It("timeout err should occured", func() {
