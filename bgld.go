@@ -201,6 +201,7 @@ func (b *Bgld) GetBlockTemplate(capabilities []string, mode string) (template st
 	if err = handleError(err, &r); err != nil {
 		return
 	}
+	err = json.Unmarshal(r.Result, &template)
 	return
 }
 
